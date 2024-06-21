@@ -3,7 +3,7 @@ import { MeiliSearchClient } from "./config/meilisearch";
 import fs from "fs";
 import path from "path";
 
-const chunkSize = 1;
+const chunkSize = 5000;
 
 export class ArtistService {
     private db: Database;
