@@ -27,4 +27,3 @@ LEFT JOIN (
 ) album_image ON album.id = album_image.album_id AND album_image.rn = 1
 WHERE album_image.url IS NOT NULL
 ORDER BY album.id ASC, album_image.url DESC
-LIMIT 400000 OFFSET 1700000;

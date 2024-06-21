@@ -1,13 +1,17 @@
-import path from "path";
 import { Database } from "./config/db";
-import fs from "fs";
 import { MeiliSearchClient } from "./config/meilisearch";
+import fs from "fs";
+import path from "path";
+
+const chunkSize = 1;
 
 export class ArtistService {
     private db: Database;
+    private meilisearch: MeiliSearchClient;
 
     constructor() {
         this.db = new Database();
+        this.meilisearch = new MeiliSearchClient();
     }
 
     async syncArtist(): Promise<void> {
@@ -16,22 +20,36 @@ export class ArtistService {
                 if (err) {
                     console.error('Error reading the file:', err);
                 }
-                console.log('data', data)
-                const result = await this.db.query(data);
+                const countQuery = `SELECT COUNT(*) FROM artist`;
+                const countResult = await this.db.query(countQuery);
+                const totalRows = parseInt(countResult[0].count, 10);
+                if (isNaN(totalRows)) {
+                    throw new Error("Failed to parse totalRows as a number.");
+                }
+                if (isNaN(totalRows)) {
+                    throw new Error("Failed to parse totalRows as a number.");
+                }
 
-                const meilisearch = new MeiliSearchClient();
-                meilisearch.addData('artists', result);
+                console.log("===== Total Row =====", totalRows);
+                let offset = 0;
+                while (offset < totalRows) {
+                    console.log("======= Start loop =========");
 
+                    const result = await this.db.query(data, [chunkSize, offset]);
+
+                    console.log(`Processing chunk ${chunkSize} - offset ${offset}`);
+
+                    await this.meilisearch.addData('artist', result);
+
+                    offset += chunkSize;
+                }
             });
-
-
         } catch (error) {
-            console.error('Error fetching artists', error);
+            console.error('Error', error);
         }
     }
 }
 
 const artist = new ArtistService();
 
-artist.syncArtist()
-
+artist.syncArtist();

@@ -23,4 +23,5 @@ LEFT JOIN (
 ) AS artist_image ON artist.id = artist_image.artist_id AND artist_image.range = 1
 WHERE artist_image.url IS NOT NULL
 GROUP BY artist.id, artist.name, artist.gender, artist_image.url, subquery.language_id, subquery.total_view
-ORDER BY artist.id ASC, artist_image.url DESC;
+ORDER BY artist.id ASC, artist_image.url DESC
+LIMIT $1 OFFSET $2;
