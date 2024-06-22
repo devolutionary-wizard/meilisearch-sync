@@ -26,9 +26,6 @@ export class ArtistService {
                 if (isNaN(totalRows)) {
                     throw new Error("Failed to parse totalRows as a number.");
                 }
-                if (isNaN(totalRows)) {
-                    throw new Error("Failed to parse totalRows as a number.");
-                }
 
                 console.log("===== Total Row =====", totalRows);
                 let offset = 0;
