@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx ts-node src/index.ts"
+    "build": "pnpm clean && tsc && pnpm copy",
+    "clean": "rm -rf build",
+    "copy": "cp -r ./src/queries ./build",
+    "sync-album": "node build/services/album.js",
+    "sync-artist": "node build/services/artist.js",
+    "sync-track": "node build/services/track.js",
+    "update-doc-setting": "node build/services/update-setting.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +25,6 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "meilisearch": "^0.40.0",
-    "node-cron": "^3.0.3",
     "pg": "^8.12.0"
   }
 }

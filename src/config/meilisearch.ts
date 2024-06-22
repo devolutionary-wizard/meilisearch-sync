@@ -91,6 +91,25 @@ export class MeiliSearchClient {
         }
     }
 
+    async getTask(indexName: string): Promise<void> {
+        try {
+            const index = this.client.index(indexName)
+            const result = await index.getTasks();
+            console.log('Tasks: ', result)
+        } catch (error) {
+            console.error('Error get tasks:', error);
+        }
+    }
+
+    async getDetailTask(indexName: string, taskId: number) {
+        try {
+            const index = this.client.index(indexName)
+            const result = await index.getTask(taskId)
+            console.log('Task: ', result)
+        } catch (error) {
+            console.error('Error get detail task:', error);
+        }
+    }
 }
 
 
